@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
-import "./profile.css"
+import "./Profile.css"
 import { useState } from 'react'
 import { useEffect } from 'react'
 import SERVER from './Server'
