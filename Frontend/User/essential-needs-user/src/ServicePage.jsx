@@ -124,7 +124,7 @@ const ServicePage = () => {
           showConfirmButton: false,
           timer: 1500
         }).then(() => {
-          window.location.href = `/services/${serviceName.toLowerCase()}`;
+          window.location.href = "/bookings";
         });
       }
     } catch (error) {
