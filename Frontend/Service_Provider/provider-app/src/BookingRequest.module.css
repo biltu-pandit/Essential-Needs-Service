@@ -1,0 +1,13 @@
+.tableHover td {
+  transition: all 0.3s ease;
+}
+
+.tableHover tr:hover td {
+  color: white;
+
+}
+
+/* Keep badge text white */
+.tableHover tr:hover td .badge {
+  color: white !important;
+}

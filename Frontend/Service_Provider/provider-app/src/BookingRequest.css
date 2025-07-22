@@ -1,0 +1,9 @@
+/* BookingRequest.css */
+.booking-row:hover td {
+  color: white !important;
+  cursor: pointer;
+}
+
+.booking-row:hover .badge {
+  color: white !important;
+}
