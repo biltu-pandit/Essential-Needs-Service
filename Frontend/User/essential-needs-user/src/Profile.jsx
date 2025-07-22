@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import { useState, useEffect } from 'react'
-import "./profile.css"
+import "./Profile.css"
 import SERVER from './Server'
 
 const Profile = () => {
