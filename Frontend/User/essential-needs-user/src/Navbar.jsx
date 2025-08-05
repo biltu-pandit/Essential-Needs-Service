@@ -56,6 +56,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
     setShowProfileDropdown(false);
   };
 
+  // Prevent menu close when clicking on dropdown toggle
+  const handleDropdownClick = (e) => {
+    if (window.innerWidth >= 992) {
+      return; // Don't prevent default on desktop
+    }
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
@@ -97,7 +106,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
                 href="#" 
                 className="nav-link dropdown-toggle" 
                 data-bs-toggle="dropdown"
-                onClick={closeMobileMenu}
+                onClick={handleDropdownClick}
               >
                 Services
               </a>
