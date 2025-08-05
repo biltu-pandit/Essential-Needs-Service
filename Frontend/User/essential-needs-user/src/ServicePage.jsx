@@ -170,25 +170,25 @@ const ServicePage = () => {
         {displayName} Services
       </h1>
 
-      {/* Search Bar - Narrower and Centered */}
-      <div className="d-flex mb-4 justify-content-center">
-        <div className="input-group" style={{ width: '60%', maxWidth: '500px',marginTop:"-2%" }}>
-          <input 
-            className="form-control" 
-            type="text" 
-            placeholder="Search by location..." 
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          <button 
-            className="btn btn-primary"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-        </div>
-      </div>
+      {/* Search Bar - Responsive for mobile and desktop */}
+<div className="d-flex mb-4 justify-content-center">
+  <div className="input-group" style={{ width: '90%', maxWidth: '500px', marginTop: "-2%" }}>
+    <input 
+      className="form-control" 
+      type="text" 
+      placeholder="Search by location..." 
+      value={searchTerm}
+      onChange={handleSearchChange}
+      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+    />
+    <button 
+      className="btn btn-primary"
+      onClick={handleSearch}
+    >
+      Search
+    </button>
+  </div>
+</div>
 
       {/* Search Error Message */}
       {searchError && (
