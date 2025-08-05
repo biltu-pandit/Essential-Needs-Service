@@ -37,7 +37,7 @@ const Footer = () => {
             </div>
             <div className="col-lg-3 col-md-6">
               <div className="logo-container flex items-center px-4">
-          <img src="img/logo.png" height="210" width="210" alt="Logo" className="h-10 w-auto" />
+          <img src="img/ENS-logo.jpg" height="210" width="210" alt="Logo" className="h-10 w-auto" />
             </div>
               {/* <h4 className="text-light mb-4">Newsletter</h4>
               <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const slides = [
     {
@@ -58,6 +59,16 @@ const Carousel = () => {
     return () => clearInterval(interval);
   }, [slides.length]);
 
+  // Check for mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
@@ -72,7 +83,13 @@ const Carousel = () => {
 
   return (
     <div className="container-fluid p-0 pb-5">
-      <div className="position-relative overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
+      <div 
+        className="position-relative overflow-hidden" 
+        style={{ 
+          height: isMobile ? '70vh' : '100vh', 
+          minHeight: isMobile ? '400px' : '600px' 
+        }}
+      >
         {/* Slides */}
         {slides.map((slide, index) => (
           <div
@@ -140,25 +157,6 @@ const Carousel = () => {
                         animation: index === currentSlide ? 'slideInUp 1s ease-out 0.6s both' : ''
                       }}
                     >
-                      {/* <a 
-                        href="#" 
-                        className="btn btn-primary py-3 px-5 me-3 rounded-pill fw-semibold"
-                        style={{
-                          fontSize: '1.1rem',
-                          transition: 'all 0.3s ease',
-                          boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.transform = 'translateY(-2px)';
-                          e.target.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.transform = 'translateY(0)';
-                          e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-                        }}
-                      >
-                        Book Service
-                      </a> */}
                       <Link 
                         to="/about" 
                         className="btn btn-light py-3 px-5 rounded-pill fw-semibold"
@@ -209,7 +207,7 @@ const Carousel = () => {
             e.target.style.transform = 'translateY(-50%) scale(1)';
           }}
         >
-          <i className="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left" style={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}></i>
         </button>
 
         <button
@@ -220,7 +218,7 @@ const Carousel = () => {
             height: '50px',
             borderRadius: '50%',
             border: 'none',
-            fontSize: '1.2rem',
+            fontSize: isMobile ? '0.8rem' : '1.2rem',
             zIndex: 10,
             transition: 'all 0.3s ease',
             opacity: '0.8'
@@ -234,30 +232,55 @@ const Carousel = () => {
             e.target.style.transform = 'translateY(-50%) scale(1)';
           }}
         >
-          <i className="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right" style={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}></i>
         </button>
 
-        {/* Dots Indicator */}
+        {/* Enhanced Dots Indicator with Better Mobile Visibility */}
         <div 
-          className="position-absolute bottom-0 start-50 translate-middle-x d-flex gap-2 mb-4"
+          className="position-absolute bottom-0 start-50 translate-middle-x d-flex gap-3 mb-4"
           style={{ zIndex: 10 }}
         >
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`btn rounded-circle ${
-                index === currentSlide ? 'btn-primary' : 'btn-outline-light'
-              }`}
+              className="btn p-0 border-0 bg-transparent"
               style={{
-                width: '12px',
-                height: '12px',
-                padding: '0',
-                border: '2px solid white',
+                width: isMobile ? '16px' : '20px',
+                height: isMobile ? '16px' : '20px',
                 transition: 'all 0.3s ease',
-                opacity: index === currentSlide ? '1' : '0.6'
               }}
-            />
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              <svg 
+                width="100%" 
+                height="100%" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {index === currentSlide ? (
+                  <circle 
+                    cx="12" 
+                    cy="12" 
+                    r={isMobile ? '7' : '8'} 
+                    fill="#0d6efd" 
+                    stroke="#0d6efd"
+                    strokeWidth="2"
+                  />
+                ) : (
+                  <circle 
+                    cx="12" 
+                    cy="12" 
+                    r={isMobile ? '5' : '6'} 
+                    fill="white" 
+                    stroke="white" 
+                    strokeWidth="0"
+                    opacity="0.8"
+                  />
+                )}
+              </svg>
+            </button>
           ))}
         </div>
       </div>

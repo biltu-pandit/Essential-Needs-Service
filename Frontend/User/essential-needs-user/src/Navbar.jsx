@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import { FaUserCircle } from 'react-icons/fa';
@@ -8,6 +8,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const collapseRef = useRef(null);
 
   const openLogin = () => {
     setAuthMode('login');
@@ -44,35 +45,50 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
     });
   };
 
+  // Function to close the mobile menu
+  const closeMobileMenu = () => {
+    if (window.innerWidth < 992) { // Bootstrap's lg breakpoint
+      const bsCollapse = new window.bootstrap.Collapse(collapseRef.current, {
+        toggle: false
+      });
+      bsCollapse.hide();
+    }
+    setShowProfileDropdown(false);
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
         <a href="/" className="navbar-brand d-flex align-items-center px-4 px-lg-5">
-          <h2 className="m-0 text-primary">ESSENTIAL NEEDS AND SERVICES</h2>
+          <h2 className="m-0 text-primary d-none d-sm-block">ESSENTIAL NEEDS AND SERVICES</h2>
+          <h2 className="m-0 text-primary d-block d-sm-none">E.N.S.</h2>
         </a>
         <button 
           type="button" 
           className="navbar-toggler me-4" 
           data-bs-toggle="collapse" 
           data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
           onClick={() => setShowProfileDropdown(false)}
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarCollapse">
+        <div className="collapse navbar-collapse" id="navbarCollapse" ref={collapseRef}>
           <div className="navbar-nav ms-auto p-4 p-lg-0">
             <NavLink
               to="/"
               end
               className={({ isActive }) => "nav-item nav-link" + (isActive ? " active text-primary" : "")}
-              onClick={() => setShowProfileDropdown(false)}
+              onClick={closeMobileMenu}
             >
               Home
             </NavLink>
             <NavLink
               to="/about"
               className={({ isActive }) => "nav-item nav-link" + (isActive ? " active text-primary" : "")}
-              onClick={() => setShowProfileDropdown(false)}
+              onClick={closeMobileMenu}
             >
               About
             </NavLink>
@@ -81,49 +97,49 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
                 href="#" 
                 className="nav-link dropdown-toggle" 
                 data-bs-toggle="dropdown"
-                onClick={() => setShowProfileDropdown(false)}
+                onClick={closeMobileMenu}
               >
                 Services
               </a>
               <div className="dropdown-menu fade-up m-0">
-                <NavLink to="/services/electrician" className="dropdown-item">Electrician</NavLink>
-                <NavLink to="/services/doctor" className="dropdown-item">Doctor</NavLink>
-                <NavLink to="/services/plumber" className="dropdown-item">Plumber</NavLink>
-                <NavLink to="/services/ac" className="dropdown-item">AC</NavLink>
-                <NavLink to="/services/carpenter" className="dropdown-item">Carpenter</NavLink>
-                <NavLink to="/services/interior designer" className="dropdown-item">Interior Designer</NavLink>
+                <NavLink to="/services/electrician" className="dropdown-item" onClick={closeMobileMenu}>Electrician</NavLink>
+                <NavLink to="/services/doctor" className="dropdown-item" onClick={closeMobileMenu}>Doctor</NavLink>
+                <NavLink to="/services/plumber" className="dropdown-item" onClick={closeMobileMenu}>Plumber</NavLink>
+                <NavLink to="/services/ac" className="dropdown-item" onClick={closeMobileMenu}>AC</NavLink>
+                <NavLink to="/services/carpenter" className="dropdown-item" onClick={closeMobileMenu}>Carpenter</NavLink>
+                <NavLink to="/services/interior designer" className="dropdown-item" onClick={closeMobileMenu}>Interior Designer</NavLink>
               </div>
             </div>
             <NavLink
               to="/bookings"
               className={({ isActive }) => "nav-item nav-link" + (isActive ? " active text-primary" : "")}
-              onClick={() => setShowProfileDropdown(false)}
+              onClick={closeMobileMenu}
             >
               Your Bookings
             </NavLink>
             <NavLink
               to="/contact"
               className={({ isActive }) => "nav-item nav-link" + (isActive ? " active text-primary" : "")}
-              onClick={() => setShowProfileDropdown(false)}
+              onClick={closeMobileMenu}
             >
               Contact
             </NavLink>
             
             {isLoggedIn ? (
-              <div className="nav-item dropdown ms-3">
+              <div className="nav-item dropdown ms-lg-3">
                 <div className="position-relative">
                   <button 
-                    className="btn btn-outline-primary rounded-pill d-flex align-items-center mt-3"
+                    className="btn btn-outline-primary rounded-pill d-flex align-items-center mt-lg-3 mt-0"
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                     style={{ 
                       minWidth: '40px', 
                       height: '40px',
                       padding: '0 12px',
-                      marginRight:"20px",
-                      marginLeft:"-20px"
+                      marginRight: "10px",
+                      marginLeft: "-10px"
                     }}
                   >
-                    <FaUserCircle size={20} className="me-2" />
+                    <FaUserCircle size={20} className="me-lg-2" />
                     <span className="d-none d-lg-inline">{userData?.name.split(' ')[0] || 'Profile'}</span>
                   </button>
                   
@@ -146,14 +162,14 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
                       <NavLink 
                         to="/profile" 
                         className="dropdown-item"
-                        onClick={() => setShowProfileDropdown(false)}
+                        onClick={closeMobileMenu}
                       >
                         My Profile
                       </NavLink>
                       <NavLink 
                         to="/bookings" 
                         className="dropdown-item"
-                        onClick={() => setShowProfileDropdown(false)}
+                        onClick={closeMobileMenu}
                       >
                         My Bookings
                       </NavLink>
@@ -169,18 +185,23 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userData, fetchUserData }) => {
                 </div>
               </div>
             ) : (
-              <button 
-                className="btn btn-primary ms-3"
-                style={{
-                  width: "200px",
-                  height:"76px",
-                  marginTop: "-1px",
-                  marginBottom: "-0.5px"
-                }}
-                onClick={openLogin}
-              >
-                Login
-              </button>
+              <div className="nav-item ms-lg-3 d-flex align-items-center">
+                <button 
+                  className="btn btn-primary py-2 px-4"
+                  onClick={() => {
+                    closeMobileMenu();
+                    openLogin();
+                  }}
+                  style={{
+                    height: '40px',
+                    whiteSpace: 'nowrap',
+                    marginRight:"15px",
+                    marginLeft:"-5px"
+                  }}
+                >
+                  Login
+                </button>
+              </div>
             )}
           </div>
         </div>
