@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const dataSchema = new mongoose.Schema({
     email: {
         required: true,
-        type: String
+        type: String,
+        unique: true // Added to ensure email uniqueness
     },
     name: {
         required: true,
@@ -17,7 +18,7 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    address:{
+    address: {
         required: true,
         type: String
     },
@@ -28,7 +29,15 @@ const dataSchema = new mongoose.Schema({
     district: {
         required: true,
         type: String
+    },
+    isVerified: {
+        type: Boolean,
+        default: false // New field for OTP verification status
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now // Optional: useful for tracking registration time
     }
-})
+});
 
-module.exports = mongoose.model('User', dataSchema)
+module.exports = mongoose.model('User', dataSchema);
